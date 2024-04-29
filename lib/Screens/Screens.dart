@@ -31,7 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Check if location permissions are granted
     bool isLocationServiceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!isLocationServiceEnabled) {
-      // Location services are disabled, show a message to the user
       _showLocationServiceDisabledMessage();
       return;
     }
@@ -39,7 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Request permission to access location
     LocationPermission permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      // Location permissions are denied, show a message to the user
       _showLocationPermissionDeniedMessage();
       return;
     }
@@ -99,95 +97,102 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.location_on),
-              Text(
-                'City: ${_weather?.areaName ?? 'Unknown'}',
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.location_on),
+            Text(
+              'City: ${_weather?.areaName ?? 'Unknown'}',
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: Colors.blue,
-                  borderRadius: BorderRadius.circular(20),
-                  border: const Border.symmetric(
-                    vertical: BorderSide(width: 2, color: Colors.black),
-                    horizontal: BorderSide(width: 2, color: Colors.black),
-                  ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: Colors.blue,
+                borderRadius: BorderRadius.circular(20),
+                border: const Border.symmetric(
+                  vertical: BorderSide(width: 2, color: Colors.black),
+                  horizontal: BorderSide(width: 2, color: Colors.black),
                 ),
-                height: 200,
-                child: _weather == null
-                    ? const Center(child: CircularProgressIndicator())
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 25, bottom: 10, left: 20, right: 20),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Temperatures",
-                                  style: TextStyle(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                Text(
-                                  '${_weather!.temperature!.celsius!.truncate()}°C',
-                                  style: const TextStyle(
-                                    fontSize: 36,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              height: 250,
+              child: _weather == null
+                  ? const Center(child: CircularProgressIndicator())
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 25, bottom: 10, left: 20, right: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Image.network(
-                                getWeatherIconUrl(_weather!.weatherIcon!),
-                                width: 100,
-                                height: 100,
+                              const Text(
+                                "Temperatures",
+                                style: TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
                               ),
                               Text(
-                                _weather!.weatherDescription!,
+                                '${_weather!.temperature!.celsius!.truncate()}°C',
                                 style: const TextStyle(
-                                  fontSize: 28,
+                                  fontSize: 36,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
                                 ),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-              ),
-            ],
-          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Image.network(
+                                    getWeatherIconUrl(_weather!.weatherIcon!),
+                                    width: 100,
+                                    height: 100,
+                                  ),
+                                  Text(
+                                    _weather!.weatherDescription!,
+                                    style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                'Feels Like ${_weather!.tempFeelsLike!.celsius!.truncate()}°C',
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            setState(() {
-              _getLocationAndWeather();
-            });
-          },
-          child: const Icon(Icons.refresh),
-        ));
+      ),
+    );
   }
 }
