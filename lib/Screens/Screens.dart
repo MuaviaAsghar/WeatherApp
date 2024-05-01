@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:weather/weather.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
@@ -10,7 +8,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
+git 
   _HomeScreenState createState() => _HomeScreenState();
 }
 
@@ -44,7 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'Wind: speed ${_weather!.windSpeed}, degree: ${_weather!.windDegree}, gust ${_weather!.windGust},\n'
           'Weather Condition code: ${_weather!.weatherConditionCode}';
     } else {
-      return ''; 
+      return '';
     }
   }
 
@@ -253,8 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Text('Error: ${snapshot.error}');
                     } else {
                       return Text(
-                        snapshot.data ??
-                            '', // Display the data or an empty string if null
+                        snapshot.data ?? '',
                         style: const TextStyle(
                           fontSize: 20,
                           color: Color(0xff7C7C7C),
